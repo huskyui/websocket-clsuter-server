@@ -1,0 +1,8 @@
+netty:
+  websocket-port: 8088
+  websocket-path: "/websocket"
+  boss-count: 1
+  worker-count: 10
+rocketmq:
+  namesrv:
+    address: 192.168.149.88:9876
