@@ -11,6 +11,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -54,13 +55,13 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
                     channelRepo.put(sendMessage.getUser(), channel);
                     response.clear();
                     response.put("msg", "登录成功");
-                    channel.writeAndFlush(new TextWebSocketFrame(Unpooled.copiedBuffer(mapper.writeValueAsString(response), Charset.defaultCharset())));
+                    channel.writeAndFlush(new TextWebSocketFrame(Unpooled.copiedBuffer(mapper.writeValueAsString(response), CharsetUtil.UTF_8)));
                 } else if ("send".equals(sendMessage.getType())) {
                     Channel channel = channelRepo.get(sendMessage.getToUser());
                     response.put("来自用户", sendMessage.getUser());
                     response.put("发送消息", sendMessage.getMessage());
                     if (channel != null) {
-                        channel.writeAndFlush(new TextWebSocketFrame(Unpooled.copiedBuffer(mapper.writeValueAsString(response), Charset.defaultCharset())));
+                        channel.writeAndFlush(new TextWebSocketFrame(Unpooled.copiedBuffer(mapper.writeValueAsString(response), CharsetUtil.UTF_8)));
                     } else {
                         // 通过mq广播
                         Message message = new Message("TopicTest", "TagA", (mapper.writeValueAsString(sendMessage)).getBytes(RemotingHelper.DEFAULT_CHARSET));

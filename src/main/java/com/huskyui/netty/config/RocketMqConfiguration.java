@@ -7,6 +7,7 @@ import com.huskyui.netty.store.ChannelRepo;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.util.CharsetUtil;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -80,7 +81,7 @@ public class RocketMqConfiguration {
                         Map<String,String> response = new HashMap<>();
                         response.put("来自队列用户",sendMessage.getUser());
                         response.put("消息",sendMessage.getMessage());
-                        channel.writeAndFlush(new TextWebSocketFrame(Unpooled.copiedBuffer(mapper.writeValueAsString(response), Charset.defaultCharset())));
+                        channel.writeAndFlush(new TextWebSocketFrame(Unpooled.copiedBuffer(mapper.writeValueAsString(response), CharsetUtil.UTF_8)));
                     }
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
