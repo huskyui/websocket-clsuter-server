@@ -66,7 +66,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
                         // 通过mq广播
                         Message message = new Message("TopicTest", "TagA", (mapper.writeValueAsString(sendMessage)).getBytes(RemotingHelper.DEFAULT_CHARSET));
                         SendResult send = producer.send(message);
-                        log.info("send {}", send);
+                        channelHandlerContext.writeAndFlush(new TextWebSocketFrame("发送到队列中"+mapper.writeValueAsString(sendMessage)));
                     }
                 }
             } catch (Exception e) {

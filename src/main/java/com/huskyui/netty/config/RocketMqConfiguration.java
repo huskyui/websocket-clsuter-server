@@ -71,7 +71,7 @@ public class RocketMqConfiguration {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 MessageExt messageExt = msgs.get(0);
-                String messageJson = new String(messageExt.getBody());
+                String messageJson = new String(messageExt.getBody(),CharsetUtil.UTF_8);
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     SendMessage sendMessage = mapper.readValue(messageJson, SendMessage.class);

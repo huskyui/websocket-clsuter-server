@@ -3,6 +3,7 @@ package com.huskyui.netty.server;
 import com.huskyui.netty.config.NettyProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,8 @@ public class WebSocketServer {
 
     public void start() throws Exception {
         System.out.println("netty server start at port" + nettyProperties.getWebsocketPort());
-        serverChannel = serverBootstrap.bind(nettyProperties.getWebsocketPort()).sync().channel().closeFuture().sync().channel();
+        serverChannel = serverBootstrap
+                .bind(nettyProperties.getWebsocketPort()).sync().channel().closeFuture().sync().channel();
     }
 
     @PreDestroy
@@ -33,6 +35,4 @@ public class WebSocketServer {
             serverChannel.parent().close();
         }
     }
-
-
 }
