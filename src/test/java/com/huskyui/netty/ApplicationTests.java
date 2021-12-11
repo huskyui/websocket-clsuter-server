@@ -1,10 +1,12 @@
 package com.huskyui.netty;
 
+import ch.qos.logback.classic.BasicConfigurator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huskyui.netty.config.NettyProperties;
 import com.huskyui.netty.server.message.SendMessage;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -19,18 +21,17 @@ import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.apache.rocketmq.remoting.exception.RemotingException;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
 @Slf4j
 class ApplicationTests {
+
 
     @Autowired
     NettyProperties nettyProperties;
@@ -49,7 +50,7 @@ class ApplicationTests {
         //
         for (int i = 0; i < 1; i++) {
             // create message instance,specifying topic ,tag and message body
-            Message msg = new Message("TopicTest","TagA",("Hello RocketMQ").getBytes(RemotingHelper.DEFAULT_CHARSET));
+            Message msg = new Message("TopicTest","TagA",("Hello RocketMQ hhhhh").getBytes(RemotingHelper.DEFAULT_CHARSET));
             SendResult sendResult = producer.send(msg);
             System.out.printf("%s%n",sendResult.toString());
         }
@@ -67,7 +68,7 @@ class ApplicationTests {
 
     public static void main(String[] args) throws MQClientException {
         // Instantiate with specified consumer group name.
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("default-producer-group");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("tcscenery_job_coupon_group");
 
         // specify name server address
         consumer.setNamesrvAddr("192.168.149.88:9876");
@@ -81,7 +82,7 @@ class ApplicationTests {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
-                System.out.printf("%s Receive New Messages: %s\n",Thread.currentThread().getName(),msgs);
+                System.out.printf("%s Receive New Messages: %s\n",Thread.currentThread().getName(),new String(msgs.get(0).getBody(),CharsetUtil.UTF_8));
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });

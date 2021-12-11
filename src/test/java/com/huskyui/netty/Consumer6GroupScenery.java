@@ -13,15 +13,15 @@ import java.util.List;
 /**
  * @author 王鹏
  */
-public class Consumer1 {
+public class Consumer6GroupScenery {
     public static void main(String[] args) throws MQClientException {
         // Instantiate with specified consumer group name.
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("default-producer-group");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("tcscenery-producer-group2");
 
         // specify name server address
         consumer.setNamesrvAddr("192.168.149.88:9876");
 
-        consumer.setMessageModel(MessageModel.CLUSTERING);
+        consumer.setMessageModel(MessageModel.BROADCASTING);
 
         // subscribe one more more topics to consume.
         consumer.subscribe("TopicTest","*");

@@ -22,7 +22,7 @@ public class Consumer2 {
         consumer.setNamesrvAddr("192.168.149.88:9876");
 
         // 将消息设置为广播模式,可以收到所有信息
-        consumer.setMessageModel(MessageModel.BROADCASTING);
+        consumer.setMessageModel(MessageModel.CLUSTERING);
 
         // subscribe one more more topics to consume.
         consumer.subscribe("TopicTest", "*");
